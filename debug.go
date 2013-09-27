@@ -12,7 +12,7 @@ func Debug(str string) {
 	if strings.Contains(env, "http2") {
 		_, file, line, _ := runtime.Caller(1)
 		f := strings.Split(file, "/")
-		filename := f[len(f)-1]
+		filename := f[len(f)-2] + "/" + f[len(f)-1]
 		fmt.Printf("%v:%v %v\n", filename, line, str)
 	}
 }
