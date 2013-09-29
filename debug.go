@@ -7,12 +7,18 @@ import (
 	"strings"
 )
 
-func Debug(str string) {
+func Debug(format string, a ...interface{}) {
 	env := os.Getenv("DEBUG")
-	if strings.Contains(env, "http2") {
-		_, file, line, _ := runtime.Caller(1)
-		f := strings.Split(file, "/")
-		filename := f[len(f)-2] + "/" + f[len(f)-1]
-		fmt.Printf("%v:%v %v\n", filename, line, str)
+
+	_, fullpath, line, _ := runtime.Caller(1)
+	f := strings.Split(fullpath, "/")
+	dir := f[len(f)-2]
+	file := f[len(f)-1]
+	path := dir + "/" + file
+
+	if strings.Contains(env, dir) {
+		fmt.Printf("[%v:%v] ", path, line)
+		fmt.Printf(format, a...)
+		fmt.Printf("\n")
 	}
 }
