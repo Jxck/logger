@@ -14,7 +14,7 @@ type Logger struct {
 	// 2 WARNING
 	// 3 INFO
 	// 4 DEBUG
-	LogLevel int
+	Level int
 }
 
 var Level map[int]string = map[int]string{
@@ -26,11 +26,11 @@ var Level map[int]string = map[int]string{
 
 func NewLogger(level int) *Logger {
 	return &Logger{
-		LogLevel: level,
+		Level: level,
 	}
 }
 
-func Init(level int) {
+func LogLevel(level int) {
 	logger = NewLogger(level)
 }
 
@@ -60,25 +60,25 @@ func out(level int, format string, a ...interface{}) {
 }
 
 func (l *Logger) Error(format string, a ...interface{}) {
-	if l.LogLevel >= 1 {
+	if l.Level >= 1 {
 		out(1, format, a...)
 	}
 }
 
 func (l *Logger) Warn(format string, a ...interface{}) {
-	if l.LogLevel >= 2 {
+	if l.Level >= 2 {
 		out(2, format, a...)
 	}
 }
 
 func (l *Logger) Info(format string, a ...interface{}) {
-	if l.LogLevel >= 3 {
+	if l.Level >= 3 {
 		out(3, format, a...)
 	}
 }
 
 func (l *Logger) Debug(format string, a ...interface{}) {
-	if l.LogLevel >= 4 {
+	if l.Level >= 4 {
 		out(4, format, a...)
 	}
 }
