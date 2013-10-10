@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/jxck/debug"
+	"github.com/jxck/logger"
 )
 
 func init() {
-	debug.Init(3)
+	logger.Init(4)
 }
 
 func main() {
-	debug.Info("%v", "info")
-	debug.Debug("%v", "debug")
-	debug.Warn("%v", "warn")
-	debug.Error("%v", "error")
+	logger.Info("%v", "info")
+	logger.Debug("%v", "logger")
+	logger.Warn("%v", "warn")
+	logger.Error("%v", "error")
 }
