@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var logger *Logger
+
 type Logger struct {
 	// 1 ERR
 	// 2 WARNING
@@ -26,6 +28,10 @@ func NewLogger(level int) *Logger {
 	return &Logger{
 		LogLevel: level,
 	}
+}
+
+func Init(level int) {
+	logger = NewLogger(level)
 }
 
 func getPath() (dir, path string, line int) {
@@ -75,4 +81,20 @@ func (l *Logger) Debug(format string, a ...interface{}) {
 	if l.LogLevel >= 4 {
 		out(4, format, a...)
 	}
+}
+
+func Error(format string, a ...interface{}) {
+	logger.Error(format, a...)
+}
+
+func Warn(format string, a ...interface{}) {
+	logger.Warn(format, a...)
+}
+
+func Info(format string, a ...interface{}) {
+	logger.Info(format, a...)
+}
+
+func Debug(format string, a ...interface{}) {
+	logger.Debug(format, a...)
 }
