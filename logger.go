@@ -9,8 +9,6 @@ import (
 
 var logger *Logger
 
-var Print = fmt.Println
-
 type Logger struct {
 	// 1 ERR
 	// 2 WARNING
@@ -34,12 +32,6 @@ func NewLogger(level int) *Logger {
 
 func LogLevel(level int) {
 	logger = NewLogger(level)
-}
-
-func Verbose(v bool) {
-	if !v {
-		Print = func(a ...interface{}) (n int, err error) { return }
-	}
 }
 
 func getPath() (dir, path string, line int) {
