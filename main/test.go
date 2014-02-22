@@ -1,16 +1,22 @@
 package main
 
 import (
-	"github.com/jxck/logger"
+	"flag"
+	. "github.com/jxck/logger"
 )
 
+var loglevel int
+
 func init() {
-	logger.LogLevel(4)
+	flag.IntVar(&loglevel, "l", 0, "log level (1 ERR, 2 WARNING, 3 INFO, 4 DEBUG)")
+	flag.Parse()
+	LogLevel(loglevel)
 }
 
 func main() {
-	logger.Error("%v", "error")
-	logger.Warn("%v", "warn")
-	logger.Info("%v", "info")
-	logger.Debug("%v", "logger")
+	Error("%v", "error")
+	Warn("%v", "warn")
+	Notice("%v", "notice")
+	Info("%v", "info")
+	Debug("%v", "logger")
 }
