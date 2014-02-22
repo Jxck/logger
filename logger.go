@@ -11,17 +11,19 @@ var logger *Logger
 
 type Logger struct {
 	// 1 ERR
-	// 2 WARNING
-	// 3 INFO
-	// 4 DEBUG
+	// 2 WARN
+	// 3 NOTICE
+	// 4 INFO
+	// 5 DEBUG
 	Level int
 }
 
 var Level map[int]string = map[int]string{
 	1: "ERROR",
 	2: "WARN",
-	3: "INFO",
-	4: "DEBUG",
+	3: "NOTICE",
+	4: "INFO",
+	5: "DEBUG",
 }
 
 func NewLogger(level int) *Logger {
@@ -71,15 +73,21 @@ func (l *Logger) Warn(format string, a ...interface{}) {
 	}
 }
 
-func (l *Logger) Info(format string, a ...interface{}) {
+func (l *Logger) NOTICE(format string, a ...interface{}) {
 	if l.Level >= 3 {
 		out(3, format, a...)
 	}
 }
 
-func (l *Logger) Debug(format string, a ...interface{}) {
+func (l *Logger) Info(format string, a ...interface{}) {
 	if l.Level >= 4 {
 		out(4, format, a...)
+	}
+}
+
+func (l *Logger) Debug(format string, a ...interface{}) {
+	if l.Level >= 5 {
+		out(5, format, a...)
 	}
 }
 
@@ -88,6 +96,10 @@ func Error(format string, a ...interface{}) {
 }
 
 func Warn(format string, a ...interface{}) {
+	logger.Warn(format, a...)
+}
+
+func Notice(format string, a ...interface{}) {
 	logger.Warn(format, a...)
 }
 
