@@ -15,6 +15,7 @@ type Logger struct {
 	// 3 NOTICE
 	// 4 INFO
 	// 5 DEBUG
+	// 6 TRACE
 	Level int
 }
 
@@ -24,6 +25,7 @@ var Level map[int]string = map[int]string{
 	3: "NOTICE",
 	4: "INFO",
 	5: "DEBUG",
+	6: "TRACE",
 }
 
 func NewLogger(level int) *Logger {
@@ -91,6 +93,12 @@ func (l *Logger) Debug(format string, a ...interface{}) {
 	}
 }
 
+func (l *Logger) Trace(format string, a ...interface{}) {
+	if l.Level >= 6 {
+		out(6, format, a...)
+	}
+}
+
 func Error(format string, a ...interface{}) {
 	logger.Error(format, a...)
 }
@@ -109,4 +117,8 @@ func Info(format string, a ...interface{}) {
 
 func Debug(format string, a ...interface{}) {
 	logger.Debug(format, a...)
+}
+
+func Trace(format string, a ...interface{}) {
+	logger.Trace(format, a...)
 }
