@@ -108,7 +108,7 @@ func Warn(format string, a ...interface{}) {
 }
 
 func Notice(format string, a ...interface{}) {
-	logger.Warn(format, a...)
+	logger.Notice(format, a...)
 }
 
 func Info(format string, a ...interface{}) {
