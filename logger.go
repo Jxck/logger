@@ -75,7 +75,7 @@ func (l *Logger) Warn(format string, a ...interface{}) {
 	}
 }
 
-func (l *Logger) NOTICE(format string, a ...interface{}) {
+func (l *Logger) Notice(format string, a ...interface{}) {
 	if l.Level >= 3 {
 		out(3, format, a...)
 	}
