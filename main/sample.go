@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	. "github.com/jxck/logger"
+	. "github.com/Jxck/logger"
 )
 
 var loglevel int
