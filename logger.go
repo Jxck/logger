@@ -7,35 +7,39 @@ import (
 	"strings"
 )
 
-var logger *Logger
+type LogLevel int
 
-type Logger struct {
-	// 1 ERR
-	// 2 WARN
-	// 3 NOTICE
-	// 4 INFO
-	// 5 DEBUG
-	// 6 TRACE
-	Level int
+var loglevel LogLevel
+
+func Level(level int) {
+	loglevel = LogLevel(level)
 }
 
-var Level map[int]string = map[int]string{
-	1: "ERROR",
-	2: "WARN",
-	3: "NOTICE",
-	4: "INFO",
-	5: "DEBUG",
-	6: "TRACE",
+const (
+	FATAL LogLevel = iota
+	ERROR
+	WARN
+	NOTICE
+	INFO
+	DEBUG
+	TRACE
+)
+
+func Help() string {
+	return "log level	(0 FATAL, 1 ERROR, 2 WARN, 3 NOTICE, 4 INFO, 5 DEBUG, 6 TRACE)"
 }
 
-func NewLogger(level int) *Logger {
-	return &Logger{
-		Level: level,
+func (level LogLevel) String() string {
+	names := []string{
+		"FATAL",
+		"ERROR",
+		"WARN",
+		"NOTICE",
+		"INFO",
+		"DEBUG",
+		"TRACE",
 	}
-}
-
-func LogLevel(level int) {
-	logger = NewLogger(level)
+	return names[int(level)]
 }
 
 func getPath() (dir, path string, line int) {
@@ -47,78 +51,58 @@ func getPath() (dir, path string, line int) {
 	return
 }
 
-func out(level int, format string, a ...interface{}) {
+func out(level LogLevel, format string, v ...interface{}) {
 	_, path, line := getPath()
 
-	dest := os.Stdout
-	if level >= 4 {
-		dest = os.Stderr
+	// TODO: always stderr in debug
+	// dest := os.Stdout
+	// if level >= 4 {
+	// 	dest = os.Stderr
+	// }
+	dest := os.Stderr
+
+	if level > loglevel {
+		return
 	}
 
 	fmt.Fprintf(dest,
 		"%s [%v:%v] %v\n",
-		Level[level],
+		level,
 		path,
 		line,
-		fmt.Sprintf(format, a...))
-}
+		fmt.Sprintf(format, v...))
 
-func (l *Logger) Error(format string, a ...interface{}) {
-	if l.Level >= 1 {
-		out(1, format, a...)
+	// in Logger.Fatal() case
+	if level == FATAL {
+		fmt.Println("exit")
+		os.Exit(1)
 	}
 }
 
-func (l *Logger) Warn(format string, a ...interface{}) {
-	if l.Level >= 2 {
-		out(2, format, a...)
-	}
+func Fatal(format string, v ...interface{}) {
+	out(FATAL, format, v...)
 }
 
-func (l *Logger) Notice(format string, a ...interface{}) {
-	if l.Level >= 3 {
-		out(3, format, a...)
-	}
+func Error(formt string, v ...interface{}) {
+	out(ERROR, formt, v...)
 }
 
-func (l *Logger) Info(format string, a ...interface{}) {
-	if l.Level >= 4 {
-		out(4, format, a...)
-	}
+func Warn(format string, v ...interface{}) {
+	out(WARN, format, v...)
 }
 
-func (l *Logger) Debug(format string, a ...interface{}) {
-	if l.Level >= 5 {
-		out(5, format, a...)
-	}
+func Notice(formt string, v ...interface{}) {
+	out(NOTICE, formt, v...)
 }
 
-func (l *Logger) Trace(format string, a ...interface{}) {
-	if l.Level >= 6 {
-		out(6, format, a...)
-	}
+func Info(formt string, v ...interface{}) {
+	out(INFO, formt, v...)
 }
 
-func Error(format string, a ...interface{}) {
-	logger.Error(format, a...)
+func Debug(formt string, v ...interface{}) {
+	out(DEBUG, formt, v...)
 }
 
-func Warn(format string, a ...interface{}) {
-	logger.Warn(format, a...)
-}
-
-func Notice(format string, a ...interface{}) {
-	logger.Notice(format, a...)
-}
-
-func Info(format string, a ...interface{}) {
-	logger.Info(format, a...)
-}
-
-func Debug(format string, a ...interface{}) {
-	logger.Debug(format, a...)
-}
-
-func Trace(format string, a ...interface{}) {
-	logger.Trace(format, a...)
+func Trace(format string, v ...interface{}) {
+	out(TRACE, format, v...)
 }
