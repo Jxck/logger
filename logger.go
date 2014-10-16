@@ -43,7 +43,7 @@ func (level LogLevel) String() string {
 }
 
 func getPath() (dir, path string, line int) {
-	_, fullpath, line, _ := runtime.Caller(4)
+	_, fullpath, line, _ := runtime.Caller(3)
 	f := strings.Split(fullpath, "/")
 	dir = f[len(f)-2]
 	file := f[len(f)-1]
